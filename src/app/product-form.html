@@ -1,0 +1,57 @@
+<a class="back-link" [routerLink]="backLink"><span aria-hidden="true">←</span> {{ id === null ? 'До каталогу' : 'До товару' }}</a>
+
+<section class="editor" aria-labelledby="form-title">
+  <div class="page-heading">
+    <h1 id="form-title">{{ id === null ? 'Новий товар' : 'Редагувати товар' }}</h1>
+  </div>
+
+  @if (loading()) {
+    <p class="notice" role="status">Завантажуємо товар…</p>
+  } @else if (loadError()) {
+    <p class="notice problem" role="alert">{{ loadError() }}</p>
+  } @else {
+    <form class="product-form" [formGroup]="form" (ngSubmit)="save()">
+      @let nameInvalid = controls.name.touched && controls.name.invalid;
+      @let categoryInvalid = controls.category.touched && controls.category.invalid;
+      @let priceInvalid = controls.price.touched && controls.price.invalid;
+      @let stockInvalid = controls.stock.touched && controls.stock.invalid;
+
+      <div class="field">
+        <label for="name">Назва товару</label>
+        <input id="name" type="text" formControlName="name" maxlength="80" required
+          [attr.aria-invalid]="nameInvalid" [attr.aria-describedby]="nameInvalid ? 'name-error' : null" />
+        @if (nameInvalid) { <p id="name-error" class="error-text">Введіть назву товару.</p> }
+      </div>
+      <div class="field">
+        <label for="category">Категорія</label>
+        <select id="category" formControlName="category" required [attr.aria-invalid]="categoryInvalid"
+          [attr.aria-describedby]="categoryInvalid ? 'category-error' : null">
+          <option value="" disabled>Оберіть категорію</option>
+          @for (category of categories; track category) {
+            <option [value]="category">{{ category }}</option>
+          }
+        </select>
+        @if (categoryInvalid) { <p id="category-error" class="error-text">Оберіть категорію.</p> }
+      </div>
+      <div class="field">
+        <label for="price">Ціна, грн</label>
+        <input id="price" type="number" min="1" step="0.01" formControlName="price" required
+          [attr.aria-invalid]="priceInvalid" [attr.aria-describedby]="priceInvalid ? 'price-error' : null" />
+        @if (priceInvalid) { <p id="price-error" class="error-text">Введіть ціну від 1 грн із точністю до копійок.</p> }
+      </div>
+      <div class="field">
+        <label for="stock">Залишок, шт.</label>
+        <input id="stock" type="number" min="0" step="1" formControlName="stock" required
+          [attr.aria-invalid]="stockInvalid" [attr.aria-describedby]="stockInvalid ? 'stock-error' : null" />
+        @if (stockInvalid) { <p id="stock-error" class="error-text">Введіть ціле число від нуля.</p> }
+      </div>
+      @if (saveError()) { <p class="notice problem form-wide" role="alert">{{ saveError() }}</p> }
+      <div class="actions form-wide">
+        <button class="button primary" type="submit" [disabled]="saving()">
+          {{ saving() ? 'Зберігаємо…' : 'Зберегти' }}
+        </button>
+        <a class="button secondary" [routerLink]="backLink">Скасувати</a>
+      </div>
+    </form>
+  }
+</section>

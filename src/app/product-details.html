@@ -1,0 +1,43 @@
+<a class="back-link" routerLink="/products"><span aria-hidden="true">←</span> До каталогу</a>
+
+@if (loading()) {
+  <p class="notice" role="status">Завантажуємо товар…</p>
+} @else if (error()) {
+  <p class="notice problem" role="alert">{{ error() }}</p>
+} @else if (product(); as item) {
+  <section class="details" aria-labelledby="details-title">
+    <div class="page-heading">
+      <h1 id="details-title">{{ item.name }}</h1>
+      <a class="button primary" [routerLink]="['/products', item.id, 'edit']">Редагувати</a>
+    </div>
+
+    <dl class="properties">
+      <div><dt>Категорія</dt><dd>{{ item.category }}</dd></div>
+      <div><dt>Ціна</dt><dd>{{ item.price | number:'1.0-2' }} грн</dd></div>
+      <div>
+        <dt>Залишок</dt>
+        <dd>
+          @if (item.stock) { {{ item.stock | number }} шт. } @else { Немає в наявності }
+        </dd>
+      </div>
+    </dl>
+
+    <button class="button danger-outline" type="button" (click)="deleteDialog.showModal(); deleteError.set('')">
+      Видалити товар
+    </button>
+
+    <dialog #deleteDialog class="confirm-dialog" aria-labelledby="delete-title" aria-describedby="delete-description"
+      (cancel)="beforeCancel($event)">
+      <h2 id="delete-title">Видалити товар?</h2>
+      <p id="delete-description">«{{ item.name }}» буде видалено з каталогу.</p>
+      @if (deleteError()) { <p class="error-text" role="alert">{{ deleteError() }}</p> }
+      <div class="actions">
+        <button class="button secondary" type="button" autofocus [disabled]="deleting()"
+          (click)="deleteDialog.close()">Скасувати</button>
+        <button class="button danger" type="button" [disabled]="deleting()" (click)="deleteProduct(item)">
+          {{ deleting() ? 'Видаляємо…' : 'Видалити' }}
+        </button>
+      </div>
+    </dialog>
+  </section>
+}

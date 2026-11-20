@@ -1,0 +1,16 @@
+{
+  "products": [
+    { "id": 1, "name": "Keychron K2", "category": "Клавіатури", "price": 3699, "stock": 5 },
+    { "id": 2, "name": "Logitech MX Master 3S", "category": "Миші", "price": 4199, "stock": 7 },
+    { "id": 3, "name": "Anker 555 USB-C Hub", "category": "Підключення", "price": 2799, "stock": 3 },
+    { "id": 4, "name": "Logitech K380s", "category": "Клавіатури", "price": 1799, "stock": 9 },
+    { "id": 5, "name": "Razer DeathAdder V3", "category": "Миші", "price": 2499, "stock": 4 },
+    { "id": 6, "name": "Satechi USB-C Multiport", "category": "Підключення", "price": 3299, "stock": 0 },
+    { "id": 7, "name": "NuPhy Air75 V2", "category": "Клавіатури", "price": 4799, "stock": 2 },
+    { "id": 8, "name": "Logitech Pebble 2 M350s", "category": "Миші", "price": 999, "stock": 11 },
+    { "id": 9, "name": "UGREEN Revodok 105", "category": "Підключення", "price": 1399, "stock": 8 },
+    { "id": 10, "name": "Akko 5075B Plus", "category": "Клавіатури", "price": 3199, "stock": 0 },
+    { "id": 11, "name": "Logitech G305", "category": "Миші", "price": 1599, "stock": 6 },
+    { "id": 12, "name": "Baseus Metal Gleam", "category": "Підключення", "price": 1899, "stock": 6 }
+  ]
+}

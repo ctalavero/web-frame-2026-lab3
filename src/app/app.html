@@ -1,0 +1,16 @@
+<header class="site-header">
+  <div class="shell header-inner">
+    <a class="brand" routerLink="/">
+      <span class="brand-icon" aria-hidden="true"></span>
+      Периферія
+    </a>
+    <nav aria-label="Основна навігація">
+      <a routerLink="/" routerLinkActive="current" [routerLinkActiveOptions]="{ exact: true }"
+        ariaCurrentWhenActive="page">Головна</a>
+      <a routerLink="/products" routerLinkActive="current" ariaCurrentWhenActive="page">Каталог</a>
+    </nav>
+  </div>
+</header>
+<main class="shell main">
+  <router-outlet />
+</main>

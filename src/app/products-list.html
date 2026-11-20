@@ -1,0 +1,69 @@
+<section aria-labelledby="catalog-title">
+  <div class="page-heading">
+    <h1 id="catalog-title">Каталог</h1>
+    <a class="button primary" routerLink="/products/new"><span aria-hidden="true">+</span> Додати товар</a>
+  </div>
+
+  @if (loading()) {
+    <p class="notice" role="status">Завантажуємо товари…</p>
+  } @else if (error()) {
+    <div class="notice problem">
+      <p role="alert">{{ error() }}</p>
+      <button class="button secondary" type="button" (click)="load()">Повторити</button>
+    </div>
+  } @else {
+    <div class="catalog-toolbar">
+      <label for="filter-category">Категорія</label>
+      <select id="filter-category" #categorySelect [value]="category()"
+        (change)="filterByCategory(categorySelect.value)">
+        <option value="">Усі категорії</option>
+        @for (category of categories; track category) {
+          <option [value]="category">{{ category }}</option>
+        }
+      </select>
+    </div>
+
+    @if (visible().length) {
+      <div class="catalog">
+        <div class="catalog-columns catalog-head" aria-hidden="true">
+          <span>Товар</span><span>Категорія</span><span>Ціна</span><span>Залишок</span>
+        </div>
+        <ul class="catalog-items" aria-label="Товари" tabindex="-1" #results>
+          @for (product of visible(); track product.id) {
+            <li class="catalog-columns product-row">
+              <a class="product-link" [routerLink]="['/products', product.id]">{{ product.name }}</a>
+              <span class="product-category">{{ product.category }}</span>
+              <div class="product-values">
+                <span class="price">{{ product.price | number:'1.0-2' }} грн</span>
+                <span class="stock" [class.out-of-stock]="!product.stock">
+                  @if (product.stock) {
+                    <span class="visually-hidden">Залишок: </span>{{ product.stock | number }} шт.
+                  } @else {
+                    Немає в наявності
+                  }
+                </span>
+              </div>
+            </li>
+          }
+        </ul>
+      </div>
+      <div class="catalog-footer">
+        <p class="page-count" aria-live="polite">
+          Показано {{ offset() + 1 }}–{{ offset() + visible().length }} з {{ filtered().length }}
+        </p>
+        @if (pages() > 1) {
+          <nav class="pagination" aria-label="Сторінки каталогу">
+            <button class="button secondary" type="button" [disabled]="page() === 1"
+              (click)="goToPage(page() - 1, results)">Назад</button>
+            <button class="button secondary" type="button" [disabled]="page() === pages()"
+              (click)="goToPage(page() + 1, results)">Далі</button>
+          </nav>
+        }
+      </div>
+    } @else {
+      <p class="notice" role="status">
+        @if (category()) { У цій категорії ще немає товарів. } @else { Каталог поки порожній. }
+      </p>
+    }
+  }
+</section>
